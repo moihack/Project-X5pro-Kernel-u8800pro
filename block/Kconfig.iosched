@@ -127,7 +127,7 @@ config DEFAULT_IOSCHED
 	default "bfq" if DEFAULT_BFQ
 	default "sio" if DEFAULT_SIO
 	default "noop" if DEFAULT_NOOP
-        default "row" if DEFAULT_ROW
+    default "row" if DEFAULT_ROW
 
 endmenu
 

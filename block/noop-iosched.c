@@ -95,7 +95,7 @@ static struct elevator_type elevator_noop = {
 static int __init noop_init(void)
 {
 	elv_register(&elevator_noop);
-
+	
 	return 0;
 }
 

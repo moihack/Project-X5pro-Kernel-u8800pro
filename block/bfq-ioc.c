@@ -16,6 +16,7 @@
  * the module is exiting wake up anyone waiting for its deallocation
  * (see bfq_exit()).
  */
+
 static void bfq_cic_free_rcu(struct rcu_head *head)
 {
 	struct cfq_io_context *cic;
