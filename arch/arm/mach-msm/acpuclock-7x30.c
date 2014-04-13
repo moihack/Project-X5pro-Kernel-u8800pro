@@ -53,8 +53,8 @@
 
 #define MAX_AXI_KHZ 192000
 
-#define ACE_ACPU_MIN_UV_MV 750U
-#define ACE_ACPU_MAX_UV_MV 1450U
+#define ACPU_MIN_UV_MV 725U
+#define ACPU_MAX_UV_MV 1400U
 
 struct clock_state {
 	struct clkctl_acpu_speed	*current_speed;
@@ -88,18 +88,11 @@ static struct clock_state drv_state = { 0 };
 static struct clkctl_acpu_speed *backup_s;
 
 static struct pll pll2_tbl[] = {
-	{  25, 0, 1, 0 }, /* 480 MHz */
-	{  31, 1, 4, 0 }, /* 600 MHz */
 	{  42, 0, 1, 0 }, /* 806 MHz */
 	{  53, 1, 3, 0 }, /* 1024 MHz */
 	{ 125, 0, 1, 1 }, /* 1200 MHz */
 	{  73, 0, 1, 0 }, /* 1401 MHz */
-	{  79, 0, 1, 0 }, /* 1516 MHz */
-	{  84, 0, 1, 0 }, /* 1612 MHz */
-	{  89, 0, 1, 0 }, /* 1708 MHz */
-	{  94, 0, 1, 0 }, /* 1804 MHz */
-	{  99, 0, 1, 0 }, /* 1901 Mhz */
-
+	{  87, 0, 1, 0 }, /* 1621 MHz */
 };
 
 /* Use negative numbers for sources that can't be enabled/disabled */
@@ -141,11 +134,7 @@ static struct clkctl_acpu_speed acpu_freq_tbl[] = {
 	{ 1, 1024000, PLL_2, 3, 0, UINT_MAX, 1200, VDD_RAW(1200), &pll2_tbl[3]},
 	{ 1, 1200000, PLL_2, 3, 0, UINT_MAX, 1200, VDD_RAW(1200), &pll2_tbl[4]},
 	{ 1, 1401600, PLL_2, 3, 0, UINT_MAX, 1250, VDD_RAW(1250), &pll2_tbl[5]},
-	{ 1, 1516800, PLL_2, 3, 0, UINT_MAX, 1300, VDD_RAW(1300), &pll2_tbl[6]},
-	{ 1, 1612800, PLL_2, 3, 0, UINT_MAX, 1350, VDD_RAW(1350), &pll2_tbl[7]},
-	{ 1, 1708800, PLL_2, 3, 0, UINT_MAX, 1400, VDD_RAW(1400), &pll2_tbl[8]},
-	{ 1, 1804800, PLL_2, 3, 0, UINT_MAX, 1425, VDD_RAW(1425), &pll2_tbl[9]},
-	{ 1, 1901800, PLL_2, 3, 0, UINT_MAX, 1450, VDD_RAW(1450), &pll2_tbl[10]},
+	{ 1, 1612800, PLL_2, 3, 0, UINT_MAX, 1325, VDD_RAW(1325), &pll2_tbl[7]},
 	{ 0 }
 };
 
@@ -499,8 +488,7 @@ struct acpuclk_soc_data acpuclk_7x30_soc_data __initdata = {
 	.init = acpuclk_7x30_init,
 };
 
-#ifdef CONFIG_CPU_FREQ_VDD_LEVELS
-
+#ifdef CONFIG_VDD_SYSFS_INTERFACE
 ssize_t acpuclk_get_vdd_levels_str(char *buf)
 {
 	int i, len = 0;
@@ -525,9 +513,9 @@ void acpuclk_set_vdd(unsigned int khz, int vdd)
 	for (i = 0; acpu_freq_tbl[i].acpu_clk_khz; i++)
 	{
 		if (khz == 0)
-			new_vdd = min(max((acpu_freq_tbl[i].vdd_mv + vdd), ACE_ACPU_MIN_UV_MV), ACE_ACPU_MAX_UV_MV);
+			new_vdd = min(max((acpu_freq_tbl[i].vdd_mv + vdd), ACPU_MIN_UV_MV), ACPU_MAX_UV_MV);
 		else if (acpu_freq_tbl[i].acpu_clk_khz == khz)
-			new_vdd = min(max((unsigned int)vdd, ACE_ACPU_MIN_UV_MV), ACE_ACPU_MAX_UV_MV);
+			new_vdd = min(max((unsigned int)vdd, ACPU_MIN_UV_MV), ACPU_MAX_UV_MV);
 		else continue;
 
 		acpu_freq_tbl[i].vdd_mv = new_vdd;
