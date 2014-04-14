@@ -1115,10 +1115,10 @@ static struct snddev_icodec_data snddev_ispkr_stereo_data_u8860 = {
 	.default_sample_rate = 48000,
 	.pamp_on = msm_snddev_poweramp_on,
 	.pamp_off = msm_snddev_poweramp_off,
-	.max_voice_rx_vol[VOC_NB_INDEX] = -500,
-	.min_voice_rx_vol[VOC_NB_INDEX] = -2000,
-	.max_voice_rx_vol[VOC_WB_INDEX] = -900,
-	.min_voice_rx_vol[VOC_WB_INDEX] = -2400
+	.max_voice_rx_vol[VOC_NB_INDEX] = 250,
+	.min_voice_rx_vol[VOC_NB_INDEX] = -900,
+	.max_voice_rx_vol[VOC_WB_INDEX] = 250,
+	.min_voice_rx_vol[VOC_WB_INDEX] = -900
 };
 /* DTS2011053005461 dongchen 20110530 end >*/
 /* DTS2011080400504 dongchen 20110805 end >*/
@@ -2100,23 +2100,23 @@ void __ref msm_snddev_init_timpani(void)
     /* DTS2011062600102  sunhonghui 20110626 end> */
     {
         /*< DTS2011122606588 yinzhaoyang 20111230 begin */
- /*       vender_para_ptr = (smem_huawei_vender*)smem_alloc(SMEM_ID_VENDOR0, sizeof(smem_huawei_vender));
+        vender_para_ptr = (smem_huawei_vender*)smem_alloc(SMEM_ID_VENDOR0, sizeof(smem_huawei_vender));
         if (!vender_para_ptr)
         {
           pr_info("%s: Can't find vender parameter\n", __func__);
           return;
         }
         pr_info("vendor:%s,country:%s\n", vender_para_ptr->vender_para.vender_name, vender_para_ptr->vender_para.country_name);
-*/
+	
         /* choose audio parameter table according to the vender name */
-/*        if(!memcmp(vender_para_ptr->vender_para.country_name, country_name, strlen(country_name)))
+        if(!memcmp(vender_para_ptr->vender_para.country_name, country_name, strlen(country_name)))
         {
           platform_add_devices(snd_devices_u8860_es, ARRAY_SIZE(snd_devices_u8860_es));
         }
         else
         {
-*/          platform_add_devices(snd_devices_u8860, ARRAY_SIZE(snd_devices_u8860));
- //       }
+          platform_add_devices(snd_devices_u8860, ARRAY_SIZE(snd_devices_u8860));
+        }
         /* DTS2011122606588 yinzhaoyang 20111230 end > */
 		
     /*< DTS2011051303410 dongchen 20110516 begin */   
