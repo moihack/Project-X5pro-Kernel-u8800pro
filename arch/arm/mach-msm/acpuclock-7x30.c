@@ -53,8 +53,8 @@
 
 #define MAX_AXI_KHZ 192000
 
-#define ACE_ACPU_MIN_UV_MV 750U
-#define ACE_ACPU_MAX_UV_MV 1450U
+#define ACE_ACPU_MIN_UV_MV 725U
+#define ACE_ACPU_MAX_UV_MV 1425U
 
 struct clock_state {
 	struct clkctl_acpu_speed	*current_speed;
@@ -116,17 +116,10 @@ static struct clk *acpuclk_sources[MAX_SOURCE];
  * know all the h/w requirements.
  */
 static struct clkctl_acpu_speed acpu_freq_tbl[] = {
-	{ 0, 24576,  LPXO, 0, 0,  30720000,  900, VDD_RAW(900) },
-	{ 0, 61440,  PLL_3,    5, 11, 61440000,  900, VDD_RAW(900) },
-	{ 1, 122880, PLL_3,    5, 5,  61440000,  900, VDD_RAW(900) },
-	{ 0, 184320, PLL_3,    5, 4,  61440000,  900, VDD_RAW(900) },
 	{ 0, MAX_AXI_KHZ, AXI, 1, 0, 61440000, 900, VDD_RAW(900) },
 	{ 1, 245760, PLL_3,    5, 2,  61440000,  900, VDD_RAW(900) },
 	{ 1, 368640, PLL_3,    5, 1,  122800000, 900, VDD_RAW(900) },
-	{ 0, 480000,  PLL_2,    3, 0,    122800000, 900,  VDD_RAW(900) },
-	{ 0, 600000,  PLL_2,    3, 0,    122800000, 925,  VDD_RAW(925) },
 	/* AXI has MSMC1 implications. See above. */
-	{ 1, 768000, PLL_1,    2, 0,  153600000, 1050, VDD_RAW(1050) },
 	/*
 	 * AXI has MSMC1 implications. See above.
 	 */
