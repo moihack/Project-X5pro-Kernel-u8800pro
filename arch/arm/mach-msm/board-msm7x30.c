@@ -20,6 +20,7 @@
 #include <linux/io.h>
 #ifdef CONFIG_ION_MSM
 #include <linux/ion.h>
+#include <mach/ion.h>
 #endif
 #ifdef CONFIG_SPI_QSD
 #include <linux/spi/spi.h>
@@ -6770,7 +6771,9 @@ static struct platform_device *devices[] __initdata = {
 	&msm_adc_device,
 	&msm_ebi0_thermal,
 	&msm_ebi1_thermal,
-
+#ifdef CONFIG_ION_MSM
+        &ion_dev,
+#endif
 #ifdef CONFIG_HUAWEI_FEATURE_RGB_KEY_LIGHT
 	&rgb_leds_device,
 #endif
@@ -9037,13 +9040,13 @@ static struct ion_platform_data ion_pdata = {
 };
 
 
-static unsigned fluid_pmem_adsp_size = MSM_FLUID_PMEM_ADSP_SIZE;
+/*static unsigned fluid_pmem_adsp_size = MSM_FLUID_PMEM_ADSP_SIZE;
 static int __init fluid_pmem_adsp_size_setup(char *p)
 {
 	fluid_pmem_adsp_size = memparse(p, NULL);
 	return 0;
 }
-early_param("fluid_pmem_adsp_size", fluid_pmem_adsp_size_setup);
+early_param("fluid_pmem_adsp_size", fluid_pmem_adsp_size_setup); */
 
 static struct platform_device ion_dev = {
 	.name = "ion-msm",
@@ -9100,19 +9103,22 @@ static void __init size_pmem_devices(void)
 #endif
 }
 
+#ifdef CONFIG_ANDROID_PMEM
 static void __init reserve_memory_for(struct android_pmem_platform_data *p)
 {
 	msm7x30_reserve_table[p->memory_type].size += p->size;
 }
+#endif
 
 static void __init reserve_pmem_memory(void)
 {
 #ifdef CONFIG_ANDROID_PMEM
 	reserve_memory_for(&android_pmem_adsp_pdata);
 	reserve_memory_for(&android_pmem_audio_pdata);
+        msm7x30_reserve_table[MEMTYPE_EBI0].size += PMEM_KERNEL_EBI0_SIZE;
 #ifndef CONFIG_MSM_MULTIMEDIA_USE_ION
 	reserve_memory_for(&android_pmem_pdata);
-	msm7x30_reserve_table[MEMTYPE_EBI0].size += pmem_kernel_ebi0_size;
+	
 #endif
 #endif
 }
